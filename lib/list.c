@@ -10,12 +10,10 @@ void list_init (struct list* list) {
 
 /* 将链表元素elem插入元素before之前 */
 void list_insert_before(struct list_elem* before,struct list_elem* elem) {
-    enum intr_status old_status = intr_disable();
     before->prev->next = elem;
     elem->prev = before->prev;
     elem->next = before;
     before->prev = elem;
-    intr_set_status(old_status);
 }
 
 /* 添加元素到队首。类似push操作 */
@@ -29,10 +27,8 @@ void list_append(struct list* plist,struct list_elem* elem) {
 
 /* 移除元素pelem */
 void list_remove(struct list_elem* pelem) {
-    enum intr_status oldstatus = intr_disable();
     pelem->prev->next  = pelem->next;
     pelem->next->prev = pelem->prev;
-    intr_set_status(oldstatus);
 }
 
 /* 从链表第一个元素弹出并返回 类似pop */

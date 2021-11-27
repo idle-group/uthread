@@ -1,6 +1,6 @@
 #ifndef __UTHREAD_H
 #define __UTHREAD_H
-#include <global.h>
+#include "global.h"
 #include "list.h"
 typedef void thread_func(void *);
 /* 进程或者线程的状态 */
@@ -51,12 +51,17 @@ struct task_struct
 };
 extern struct list thread_ready_list;   //就绪线程队列
 extern struct list thread_all_list;     //所有线程队列
+
+// 获取当前正在运行的线程
+struct task_struct *running_thread(void);
 // 创建线程
 void thread_create(struct task_struct* pthread, thread_func function, void* func_arg);
 // 初始化线程
 void init_thread(struct task_struct* pthread, char* name, int prio);
 // 线程开始
 struct task_struct* thread_start(char* name, int prio, thread_func function, void* func_arg);
+// 线程初始化
+void thread_init(void);
 // 调度器 
 void schedule(void);
 
