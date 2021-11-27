@@ -10,8 +10,10 @@ int main()
     thread_init();
     thread_start("k_thread_a", 31, func1, "argA ");
     thread_start("k_thread_b", 31, func2, "argB ");
-    while (1)
-         ;
+    while (1){
+        schedule();
+    }
+         
     return 0;
 }
 
