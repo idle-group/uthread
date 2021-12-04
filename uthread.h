@@ -44,9 +44,10 @@ struct task_struct
     // 先做非抢占式
     // uint8_t priority; //线程优先级
     // uint8_t ticks;      // 在处理器上执行的时间滴答数
-    uint32_t elapsed_ticks; // 上cpu后运行了多久
+    uint32_t elapsed_ticks; // 上cpu后运行了多久 目前没有什么用
     struct list_elem general_tag; // 线程在一般队列中的结点 在调度器中相当于pcb
     struct list_elem all_list_tag; // 在线程队列thread_all_list中的结点
+    uint8_t exit_status;    // 线程的退出状态
     uint32_t stack_magic; // 用这串数字做栈的边界标记,用于检测栈的溢出
 };
 extern struct list thread_ready_list;   //就绪线程队列
@@ -64,5 +65,6 @@ struct task_struct* thread_start(char* name, int prio, thread_func function, voi
 void thread_init(void);
 // 调度器 
 void schedule(void);
-
+// 退出当前线程
+void thread_exit(struct task_struct* thread_over, bool need_schedule); 
 #endif

@@ -21,6 +21,9 @@ static void kernel_thread(thread_func *function, void *func_arg);
 static void kernel_thread(thread_func *function, void *func_arg)
 {
     function(func_arg);
+    // 结束会回到这个位置 在这里可以摧毁当前线程
+    printf("thread_destory\n");
+    schedule();
 }
 // 获取当前正在运行的线程结构体指针
 struct task_struct *running_thread()
@@ -130,4 +133,13 @@ void schedule()
     //更改储存的cur
     cur_thread = next;
     switch_to(cur, next);
+}
+// 退出线程 回收线程需要的资源 改变线程的状态
+// 将其退出调度队列
+void thread_exit(struct task_struct* thread_over, bool need_schedule) 
+{  
+    // 改变线程的状态
+    // 将其从调度队列中移除
+    // 将其从总线程队列中移除 //释放线程结构体在其他线程中进行
+    // 进行最后一次调度
 }
