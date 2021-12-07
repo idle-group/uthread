@@ -65,12 +65,6 @@ struct task_struct* thread_start(char* name, int prio, thread_func function, voi
 void thread_init(void);
 // 调度器 
 void schedule(void);
-
-// 对线程进行阻塞
-void thread_block(struct task_struct* pthread);
-// 对线程进行唤醒
-void thread_unblock(struct task_struct* pthread);
-// 等待线程结束之后再加入
-void thread_join(struct task_struct* pthread);
-
+// 退出当前线程
+void thread_exit(struct task_struct* thread_over, bool need_schedule); 
 #endif
