@@ -17,7 +17,7 @@ static void make_main_thread(void);
 static void kernel_thread(thread_func *function, void *func_arg);
 
 static void kernel_thread(thread_func *function, void *func_arg)
-{
+
     function(func_arg);
     // 结束会回到这个位置 在这里可以摧毁当前线程
     printf("thread_destory\n");
@@ -108,15 +108,37 @@ void thread_init(void)
     make_main_thread();
     printf("thread_init done\n");
 }
+
+// 对线程进行阻塞
+// 只有线程自己才能对自己进行阻塞操作
+// 有着三种阻塞状态
+void thread_block(enum task_status stat)
+{
+    // 获取当前线程
+    struct task_struct *cur = running_thread();
+    // 改变线程状态
+    cur->status = stat;
+    // 将线程移出等待队列
+
+    // 引起调度器进行调度
+}
+// 对线程进行唤醒
+void thread_unblock(struct task_struct *pthread)
+{
+}
+//
 // 调度器 调用此函数之后进行一次线程调度
 void schedule()
 {
     // 获取当前正在运行的线程
     struct task_struct *cur = running_thread();
-    // 添加进就绪队列尾部
-    list_append(&thread_ready_list, &cur->general_tag);
-    // 修改线程状态
-    cur->status = TASK_READY;
+    if (cur->status == TASK_RUNNING) // 只有正在运行的程序再调度的时候才能再次加入就绪队列
+    {
+        // 添加进就绪队列尾部
+        list_append(&thread_ready_list, &cur->general_tag);
+        // 修改线程状态
+        cur->status = TASK_READY;
+    }
     // 改变线程走向
     thread_tag = NULL; // thread_tag清空
                        /* 将thread_ready_list队列中的第一个就绪线程弹出,准备将其调度上cpu. */
