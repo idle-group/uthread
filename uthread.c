@@ -113,10 +113,14 @@ void schedule()
 {
     // 获取当前正在运行的线程
     struct task_struct *cur = running_thread();
-    // 添加进就绪队列尾部
-    list_append(&thread_ready_list, &cur->general_tag);
-    // 修改线程状态
-    cur->status = TASK_READY;
+    if (cur->status == TASK_RUNNING) // 当前线程正在运行才能利用调度器加入准备队列
+    {
+        // 添加进就绪队列尾部
+        list_append(&thread_ready_list, &cur->general_tag);
+        // 修改线程状态
+        cur->status = TASK_READY;
+    }
+
     // 改变线程走向
     thread_tag = NULL; // thread_tag清空
                        /* 将thread_ready_list队列中的第一个就绪线程弹出,准备将其调度上cpu. */
@@ -144,9 +148,8 @@ void thread_exit(struct task_struct *thread_over, bool need_schedule)
     list_remove(&thread_over->all_list_tag);
     //printf("thread_exit_over\n");
 
-
     // 进行最后一次调度 // 此处不能采用调度器
-    thread_tag = NULL; // thread_tag清空                   
+    thread_tag = NULL; // thread_tag清空
     /* 将thread_ready_list队列中的第一个就绪线程弹出,准备将其调度上cpu. */
     // 从就绪队列中取出一个
     thread_tag = list_pop(&thread_ready_list);
@@ -157,5 +160,4 @@ void thread_exit(struct task_struct *thread_over, bool need_schedule)
     //更改储存的cur
     cur_thread = next;
     switch_to(thread_over, next);
-
 }
