@@ -25,4 +25,4 @@ $(BUILD_DIR)/switch.o: switch_to.S
 $(BUILD_DIR)/demo: $(OBJS)
 	gcc  $(LDFLAGS) $^  -o $@
 
-ALL: $(OBJS)
+ALL: $(OBJS) $(BUILD_DIR)/demo

@@ -108,6 +108,30 @@ void thread_init(void)
     make_main_thread();
     printf("thread_init done\n");
 }
+// 线程阻塞
+void thread_block(enum task_status stat)
+{
+    // 获取当前线程
+    struct task_struct *cur = running_thread();
+    // 修改线程状态
+    assert(stat == TASK_BLOCKED || stat == TASK_WAITING || stat == TASK_HANGING);
+    cur->status = stat;
+    // 请求调度器
+    schedule();
+}
+// 线程解除阻塞状态
+void thread_unblock(struct task_struct *pthread)
+{
+    assert(((pthread->status == TASK_BLOCKED) || (pthread->status == TASK_WAITING) || (pthread->status == TASK_HANGING)));
+    // 线程不在运行之中
+    if (pthread->status != TASK_READY)
+    {
+        assert(!elem_find(&thread_ready_list, &pthread->general_tag));
+        list_push(&thread_ready_list, &pthread->general_tag); // 放到队列的最前面,使其尽快得到调度
+        pthread->status = TASK_READY;
+    }
+}
+
 // 调度器 调用此函数之后进行一次线程调度
 void schedule()
 {

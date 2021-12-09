@@ -67,4 +67,10 @@ void thread_init(void);
 void schedule(void);
 // 退出当前线程
 void thread_exit(struct task_struct* thread_over, bool need_schedule); 
+// 线程block
+// 将线程阻塞到指定状态
+void thread_block(enum task_status stat);
+// 线程unblock
+// 将线程重新调度出来
+void thread_unblock(struct task_struct* pthread);
 #endif
