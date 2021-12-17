@@ -1,16 +1,16 @@
 # uthread-A User Space Threading Library Supporting Multi-Core Systems
----
+
 - Lightweight user threads with support for blocking IO and fast context switching (ie. similar to Erlang or Go but using C)
 - Fast, scalable load balancing across multiple cores
 - Lock-free data structures
 - Supports x86 and x86_64. Further architectures can be added easily.
 - Supports native event backends on Linux and Solaris
 - Supports libev event backend
----
+
 ## Motivation
 - Why Events Are A Bad Idea (for high-concurrency servers) - Rob von Behren, Jeremy Condit, and Eric Brewer
     - Specifically, the following quote summarizes nicely: "...the duality argument of Lauer and Needham ... implies that good implementations of thread systems and event systems will have similar performance."
----
+
 ## Building
 - Type 'make' to build the library and run the unit tests
 - Link your application to libfiber.so
