@@ -16,11 +16,59 @@ Visual Studio 2022
 
 # 3. 相关原理及算法
 
-描述操作系统相关原理和算法等。
+实现的核心为线程的创建和调度，具体流程如下：
+
+<img src="image/image-20220108181910799.png" alt="image-20220108181910799" style="zoom:50%;" />
+
+<img src="image/image-20220108182105843.png" alt="image-20220108182105843" style="zoom:50%;" />
+
+<img src="image/image-20220108182120996.png" alt="image-20220108182120996" style="zoom:50%;" />
+
+![image-20220108182136962](image/image-20220108182136962.png style="zoom:50%;")
+
+<img src="image/image-20220108182159078.png" alt="image-20220108182159078" style="zoom:50%;" />
+
+<img src="image/image-20220108182218736.png" alt="image-20220108182218736" style="zoom:50%;" />
+
+<img src="image/image-20220108182233576.png" alt="image-20220108182233576" style="zoom:50%;" />
+
+<img src="image/image-20220108182245245.png" alt="image-20220108182245245" style="zoom:50%;" />
+
+<img src="image/image-20220108182258155.png" alt="image-20220108182258155" style="zoom:50%;" />
+
+<img src="image/image-20220108182310046.png" alt="image-20220108182310046" style="zoom:50%;" />
+
+<img src="image/image-20220108182328875.png" alt="image-20220108182328875" style="zoom:50%;" />
+
+<img src="image/image-20220108182346034.png" alt="image-20220108182346034" style="zoom:50%;" />
+
+<img src="image/image-20220108182403380.png" alt="image-20220108182403380" style="zoom:50%;" />
+
+<img src="image/image-20220108182416313.png" alt="image-20220108182416313" style="zoom:50%;" />
+
+<img src="image/image-20220108182429286.png" alt="image-20220108182429286" style="zoom:50%;" />
+
+<img src="image/image-20220108182441861.png" alt="image-20220108182441861" style="zoom:50%;" />
+
+<img src="image/image-20220108182457898.png" alt="image-20220108182457898" style="zoom:50%;" />
+
+<img src="image/image-20220108182518132.png" alt="image-20220108182518132" style="zoom:50%;" />
+
+<img src="image/image-20220108182533036.png" alt="image-20220108182533036" style="zoom:50%;" />
+
+<img src="image/image-20220108182549782.png" alt="image-20220108182549782" style="zoom:50%;" />
+
+<img src="image/image-20220108182604191.png" alt="image-20220108182604191" style="zoom:50%;" />
+
+<img src="image/image-20220108182619611.png" alt="image-20220108182619611" style="zoom:50%;" />
+
+<img src="image/image-20220108182640122.png" alt="image-20220108182640122" style="zoom:50%;" />
+
+<img src="image/image-20220108182656661.png" alt="image-20220108182656661" style="zoom:50%;" />
 
 # 4. 系统结构和主要的算法设计思路
 
-描述所设计系统的系统架构，主要的算法思想、流程图等。
+> 已在上面（3）中分析
 
 # 5. 程序实现---主要数据结构
 
@@ -36,14 +84,14 @@ Visual Studio 2022
 
 # 8. 总结和感想体会
 
-撰写总结和设计的感想。
+在本次的OS课程设计中，我最大的收获是加深了对线程的理解。**线程是在一个地址空间下启动并交替执行的程序，用户级线程用用户管理。**
 
 # 参考文献
 
-列出参考文献，格式参见国标GB/T 7714－2005。
+无
 
 # 附录
 
-其余需要附上的数据、图表、截图等。可以没有。
+无
 
  
