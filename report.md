@@ -334,7 +334,7 @@ void lock_release(struct lock* plock);
 ## 线程摧毁
 <img src="image/exit.jpg" alt="image-20220108182656661" style="zoom:50%;" />
 ## 阻塞
-<img src="image/block.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+<img src="image/run.jpg" alt="image-20220108182656661" style="zoom:50%;" />
 ## 锁
 ## 线程切换
 <img src="image/lock.jpg" alt="image-20220108182656661" style="zoom:50%;" />
