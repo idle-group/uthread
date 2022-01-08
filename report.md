@@ -330,13 +330,19 @@ void lock_release(struct lock* plock);
 列出系统运行的主要界面和运行结果截图。
 
 ## 线程切换
+
 <img src="image/ab.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+
 ## 线程摧毁
+
 <img src="image/exit.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+
 ## 阻塞
+
 <img src="image/run.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+
 ## 锁
-## 线程切换
+
 <img src="image/lock.jpg" alt="image-20220108182656661" style="zoom:50%;" />
 
 # 8. 总结和感想体会
