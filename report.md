@@ -103,14 +103,241 @@ Visual Studio 2022
 # 5. 程序实现---主要数据结构
 
 描述所设计系统的关键数据结构。
+## task_struct
+
+位于`uthread.h`中，相当于线程结构体TCB
+
+### 属性
+
+- uint32_t* self_stack
+  
+  指向线程自己的栈
+  
+- enum task_status status
+  
+  线程的状态
+  
+- char name[16]
+  
+  线程的名字
+  
+- uint32_t elapsed_ticks
+  
+  已经在cpu上运行的ticks
+  
+- struct list_elem general_tag
+  
+  在一般线程队列中的结点
+  
+- struct list_elem all_list_tag
+  
+  在总队列中的结点
+  
+- uint32_t stack_magic
+  
+  结构体的末尾的魔数 检测栈的溢出
+  
+
+## semaphore
+
+信号量
+
+### 属性
+
+- uint8_t value
+  
+  信号量的值
+  
+- struct list waiters
+  
+  在信号量上等待的线程
+  
+
+## lock
+
+### 属性
+
+- struct task_struct* owner
+  
+  锁的所有者
+  
+- struct semaphore* sema
+  
+  锁持有的信号量
+  
+- uint32_t count
+  
+  请求锁的次数，保证可重入
+  
+
 
 # 6. 程序实现---主要程序清单
 
-描述所设计系统的核心程序、关键函数的程序清单。
+## switch_to 函数实现线程切换
+``` c
+switch_to(struct task_struct cur,struct task_struct next);
+```
+### 线程切换函数switch_to的实现
+#### 上下文的保存与恢复
 
+call指令在跳转前将当前指令的下一条指令压入栈中
+
+cdecl 调用者将所有参数从右往左压入栈中并且调用者清理参数所占的空间
+
+那么结合这两条规则很容易得出，在c语言调用函数后，用户栈中的内容将会是
+
+<img src="image/图片.png" alt="image-20220108182656661" style="zoom:50%;" />
+
+根据abi调用协定，函数调用**ebp、 ebx, edi、 esi、和 esp 归主调函数所用**，其余的寄存器归被调函数所用​。对于线程的调度来说本质上是函数之间的切换，也就是说，只用保证在线程切换回来之后，ebp ebx edi esi esp​这5个寄存器保持不变，就能够保证程序的正常运行
+
+因此，在切换程序开始时首先执行
+
+```nasm
+ push esi
+ push edi
+ push ebx
+ push ebp
+```
+
+将这四个寄存器保存在原线程的栈中
+
+接着将esp保存在线程结构体中
+
+线程结构体是switch_to函数的第一个参数
+
+也就是esp加上ebp ebx edi esi和返回地址
+
+也就是4*5 = 20
+
+将其保存到线程结构体的首地址也就意味着将esp保存到了线程结构体的第一个数据成员中
+
+```nasm
+   mov eax, [esp + 20]
+   mov [eax], esp  
+```
+
+恢复环境是保存环境的逆过程
+
+#### 线程的切换
+
+CPU执行ret指令时，相当于执行了以下两步操作
+
+1. (IP) = ((ss)*16 +(sp))
+  
+2. (sp) = (sp)+2
+  
+
+​在恢复了环境之后，栈顶就相当于下一个线程上次调度的地方，也就是ret的返回地址，在此处执行ret就能够完成线程的切换
+
+```nasm
+ret
+```
+## schedule
+``` c
+void schedule(void);
+```
+从就绪队列中选出下一次将要调度上cpu的线程，调用switch_to 切换
+
+## 线程相关
+```c
+void thread_init(void);
+```
+
+初始化线程库
+
+```c
+struct task_struct *running_thread(void);
+```
+
+获取当前正在运行的线程
+
+```c
+struct task_struct* thread_start(char* name, int prio, thread_func function, void* func_arg);
+```
+
+开始一个线程
+
+```c
+typedef void thread_func(void*);
+```
+
+线程函数类型
+
+```c
+ void schedule();
+```
+
+让出cpu进行调度
+
+```c
+void thread_exit(struct task_struct* thread_over, bool need_schedule);
+```
+
+线程退出
+
+```c
+void thread_block(enum task_status stat);
+```
+
+线程阻塞
+
+```c
+void thread_unblock(struct task_struct* pthread);
+```
+
+线程唤醒
+
+## 信号量相关
+```c
+void sema_init(struct semaphore* psema, uint8_t value);
+```
+
+初始化信号量
+
+```c
+void sema_down(struct semaphore* psema);
+```
+
+信号量down
+
+```c
+void sema_up(struct semaphore* psema);
+```
+
+信号量up
+
+## 锁相关
+
+```c
+void lock_init(struct lock* plock);
+```
+
+锁的初始化
+
+```c
+void lock_acquire(struct lock* plock);
+```
+
+获取锁
+
+```c
+void lock_release(struct lock* plock);
+```
+
+释放锁
 # 7. 程序运行的主要界面和结果截图
 
 列出系统运行的主要界面和运行结果截图。
+
+## 线程切换
+<img src="image/ab.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 线程摧毁
+<img src="image/exit.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 阻塞
+<img src="image/run.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 锁
+## 线程切换
+<img src="image/lock.jpg" alt="image-20220108182656661" style="zoom:50%;" />
 
 # 8. 总结和感想体会
 
