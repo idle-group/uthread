@@ -232,12 +232,112 @@ CPU执行ret指令时，相当于执行了以下两步操作
 ```nasm
 ret
 ```
+## schedule
+``` c
+void schedule(void);
+```
+从就绪队列中选出下一次将要调度上cpu的线程，调用switch_to 切换
 
+## 线程相关
+```c
+void thread_init(void);
+```
 
+初始化线程库
+
+```c
+struct task_struct *running_thread(void);
+```
+
+获取当前正在运行的线程
+
+```c
+struct task_struct* thread_start(char* name, int prio, thread_func function, void* func_arg);
+```
+
+开始一个线程
+
+```c
+typedef void thread_func(void*);
+```
+
+线程函数类型
+
+```c
+ void schedule();
+```
+
+让出cpu进行调度
+
+```c
+void thread_exit(struct task_struct* thread_over, bool need_schedule);
+```
+
+线程退出
+
+```c
+void thread_block(enum task_status stat);
+```
+
+线程阻塞
+
+```c
+void thread_unblock(struct task_struct* pthread);
+```
+
+线程唤醒
+
+## 信号量相关
+```c
+void sema_init(struct semaphore* psema, uint8_t value);
+```
+
+初始化信号量
+
+```c
+void sema_down(struct semaphore* psema);
+```
+
+信号量down
+
+```c
+void sema_up(struct semaphore* psema);
+```
+
+信号量up
+
+## 锁相关
+
+```c
+void lock_init(struct lock* plock);
+```
+
+锁的初始化
+
+```c
+void lock_acquire(struct lock* plock);
+```
+
+获取锁
+
+```c
+void lock_release(struct lock* plock);
+```
+
+释放锁
 # 7. 程序运行的主要界面和结果截图
 
 列出系统运行的主要界面和运行结果截图。
 
+## 线程切换
+<img src="image/ab.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 线程摧毁
+<img src="image/exit.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 阻塞
+<img src="image/block.jpg" alt="image-20220108182656661" style="zoom:50%;" />
+## 锁
+## 线程切换
+<img src="image/lock.jpg" alt="image-20220108182656661" style="zoom:50%;" />
 
 # 8. 总结和感想体会
 
